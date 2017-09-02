@@ -1,4 +1,4 @@
-# react-magnifier-gallery
+# react-magnifier-gallery [![Build Status](https://travis-ci.org/xiaohuij/react-magnifier-gallery.svg?branch=master)](https://travis-ci.org/xiaohuij/react-magnifier-gallery) 
 
 Friendly for e-commerce product show
 
