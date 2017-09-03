@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './index.scss'
-import videoPlayIcon from './video-play-icon.png'
+import Scrollable from './scrollable'
 
 class Gallery extends Component {
   static getOffset(domNode) {
@@ -58,24 +58,13 @@ class Gallery extends Component {
         left: '0',
         top: '0',
       },
-      thumbContainerStyle: {
-        left: '0px',
-      },
-    }
-
-    this.config = {
-      moveLength: 0,
-      viewNumber: 5,
-      stepNumber: 1,
-      step: 46,
     }
 
     this.onLoadMediaHandler = this.onLoadMediaHandler.bind(this)
     this.onMouseOverHandler = this.onMouseOverHandler.bind(this)
     this.onMouseMoveHandler = this.onMouseMoveHandler.bind(this)
     this.onMouseOutHandler = this.onMouseOutHandler.bind(this)
-    this.onPrev = this.onPrev.bind(this)
-    this.onNext = this.onNext.bind(this)
+    this.onPreview = this.onPreview.bind(this)
   }
 
   componentWillMount() {
@@ -90,30 +79,6 @@ class Gallery extends Component {
 
   onPreview(photo) {
     this.setState({ selectedPhoto: photo })
-  }
-
-  onPrev() {
-    const currentLeft = this.state.thumbContainerStyle.left.split('px')[0]
-    const stride = this.config.step * this.config.stepNumber
-    const isMovable = this.config.moveLength > stride
-    const currentMoveLength = isMovable ? stride : this.config.moveLength
-    const thumbContainerLeft = parseInt(currentLeft, 10) + currentMoveLength
-
-    if (this.config.moveLength > 0) {
-      this.setStyle('thumbContainerStyle', { left: `${thumbContainerLeft}px` })
-      this.config.moveLength = isMovable ? this.config.moveLength - stride : 0
-    }
-  }
-
-  onNext() {
-    const currentLeft = this.state.thumbContainerStyle.left.split('px')[0]
-    const stride = this.config.step * this.config.stepNumber
-    const countLength = (this.state.photos.length - this.config.viewNumber) * stride
-    const thumbContainerLeft = parseInt(currentLeft, 10) - stride
-    if (this.config.moveLength < countLength) {
-      this.setStyle('thumbContainerStyle', { left: `${thumbContainerLeft}px` })
-      this.config.moveLength += stride
-    }
   }
 
   onMouseOverHandler() {
@@ -216,43 +181,6 @@ class Gallery extends Component {
     })
   }
 
-  displayScroll() {
-    if (this.props.displaySingle) {
-      return ''
-    }
-    return (
-      <div className="scroll">
-        <a className="prev" onClick={this.onPrev} role="button" tabIndex="-1">&lt;</a>
-        <a className="next" onClick={this.onNext} role="button" tabIndex="-1">&gt;</a>
-        <div className="items">
-          <ul id="imgContainer" style={{ ...this.state.thumbContainerStyle }}>
-            {
-              this.state.photos.map((photo, idx) => {
-                const imgProps = photo.video ?
-                  { className: 'video-play-icon', src: videoPlayIcon } :
-                  { src: photo.thumb }
-
-                const mouseMoveHandler = () => {
-                  this.onPreview(photo)
-                }
-
-                return (
-                  <li key={idx}>
-                    <img
-                      alt=""
-                      {...imgProps}
-                      onMouseMove={mouseMoveHandler}
-                    />
-                  </li>
-                )
-              })
-            }
-          </ul>
-        </div>
-      </div>
-    )
-  }
-
   render() {
     if (this.state.photos.length > 0) {
       return (
@@ -301,7 +229,11 @@ class Gallery extends Component {
                 </div>
               </div>
             )}
-          {this.displayScroll()}
+          <Scrollable
+            photos={this.state.photos}
+            displaySingle={this.props.displaySingle}
+            onPreview={this.onPreview}
+          />
         </div>
       )
     }
