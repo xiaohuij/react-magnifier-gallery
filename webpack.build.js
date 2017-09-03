@@ -4,7 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-let COMPONENT_FILE = 'react-hash-tabs';
+let COMPONENT_FILE = 'react-magnifier-gallery';
 const plugins = [];
 const babelOptions = {};
 
@@ -25,7 +25,7 @@ module.exports = {
   output: {
     filename: COMPONENT_FILE + '.js',
     path: path.join(__dirname, 'dist'),
-    library: 'ReactHashTabs',
+    library: 'ReactMagnifierGallery',
     libraryTarget: 'umd',
   },
   externals: {
