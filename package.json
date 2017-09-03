@@ -1,6 +1,6 @@
 {
   "name": "react-magnifier-gallery",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple react photos gallery component with magnifier",
   "main": "lib/index.js",
   "scripts": {
